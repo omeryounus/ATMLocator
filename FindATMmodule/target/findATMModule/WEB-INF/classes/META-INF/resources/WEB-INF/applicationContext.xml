@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
+
+    <bean id="atmService" class="com.backbase.test.service.ATMService"/>
+
+    <camelContext xmlns="http://camel.apache.org/schema/spring">
+        <restConfiguration component="servlet"
+                        bindingMode="json"
+                        port="8080">
+            <dataFormatProperty key="prettyPrint" value="true"/>
+        </restConfiguration>
+    
+        <!-- defines the rest services using the context-path /atm -->
+        <rest path="/atm" consumes="application/json" produces="application/json">
+            <description>User rest service</description>
+
+            <!-- this is a rest GET to view all cities -->
+            <get uri="/" outType="com.backbase.test.service.ATMService">
+                <description>Find all ATM service</description>
+                <to uri="bean:atmService?method=findAll()"/>
+            </get>
+    
+            <!-- this is a rest GET to view an city by the given name -->
+            <get uri="/city/{city}" outType="com.backbase.test.service.ATMService">
+                <description>Find ATM by city by name service</description>
+                <to uri="bean:atmService?method=findByCityName(${header.city})"/>
+            </get>
+        </rest>
+    </camelContext>
+</beans>
