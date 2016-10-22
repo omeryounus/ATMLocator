@@ -1,5 +1,3 @@
-BackBase assigment task
-
 Description:
 Spring Web application based on JDK 1.8 and standard servlet and JSP spec. Used apache camel to expose rest API to be used in JSP pages to find ATMs. A JSP page is used to render list of ATMs in dynamically populated datatable using jquery.
 
